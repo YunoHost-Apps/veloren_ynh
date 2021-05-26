@@ -1,7 +1,7 @@
-SOURCE_URL=url of app's source
-SOURCE_SUM=sha256 checksum
+SOURCE_URL=https://gitlab.com/veloren/veloren/-/archive/v0.9.0/veloren-v0.9.0.tar.gz
+SOURCE_SUM=eba23dd3c26f21499d15fbd1458729943879673dad8fbf5b49dfc3dfac2cf40b
 SOURCE_SUM_PRG=sha256sum
 SOURCE_FORMAT=tar.gz
 SOURCE_IN_SUBDIR=true
-SOURCE_FILENAME=
+SOURCE_FILENAME=veloren-v0.9.0.tar.gz
 SOURCE_EXTRACT=true

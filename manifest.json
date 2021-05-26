@@ -1,69 +1,213 @@
 {
-    "name": "YunoHost example app",
-    "id": "ynhexample",
+    "name": "Veloren server",
+    "id": "veloren",
     "packaging_format": 1,
     "description": {
-        "en": "Explain in *a few (10~15) words* the purpose of the app or what it actually does (it is meant to give a rough idea to users browsing a catalog of 100+ apps)",
-        "fr": "Expliquez en *quelques* (10~15) mots l'utilité de l'app ou ce qu'elle fait (l'objectif est de donner une idée grossière pour des utilisateurs qui naviguent dans un catalogue de 100+ apps)"
+        "en": "Multiplayer voxel RPG inspired by games such as Cube World, Legend of Zelda: Breath of the Wild, Dwarf Fortress and Minecraft",
+        "fr": "RPG voxel multijoueur inspiré de jeux tels que Cube World, Legend of Zelda : Breath of the Wild, Dwarf Fortress et Minecraft"
     },
-    "version": "1.0~ynh1",
-    "url": "https://example.com",
-    "license": "free",
+    "version": "0.9.0~ynh1",
+    "url": "https://veloren.net",
+    "upstream": {
+        "license": "GPL-3.0-only",
+        "website": "https://veloren.net/",
+        "demo": "server.veloren.net:14004",
+        "admindoc": "https://book.veloren.net/players/hosting-a-server.html",
+        "userdoc": "https://book.veloren.net/players/",
+        "code": "https://gitlab.com/veloren/veloren"
+    },
+    "license": "GPL-3.0-only",
     "maintainer": {
-        "name": "John doe",
-        "email": "john.doe@example.com",
-        "url": "http://example.com"
+        "name": "Jules Bertholet",
+        "email": "jules.bertholet@gmail.com"
     },
     "requirements": {
         "yunohost": ">= 4.1.3"
     },
     "multi_instance": true,
-    "services": [
-        "nginx",
-        "php7.3-fpm",
-        "mysql"
-    ],
+    "services": [],
     "arguments": {
         "install" : [
             {
-                "name": "domain",
-                "type": "domain",
-                "example": "example.com"
-            },
-            {
-                "name": "path",
-                "type": "path",
-                "example": "/example",
-                "default": "/example"
-            },
-            {
-                "name": "admin",
-                "type": "user",
-                "example": "johndoe"
-            },
-            {
-                "name": "is_public",
-                "type": "boolean",
-                "default": true
-            },
-            {
-                "name": "language",
+                "name": "server_name",
                 "type": "string",
+                "default": "Veloren Alpha",
                 "ask": {
-                    "en": "Choose the application language",
-                    "fr": "Choisissez la langue de l'application"
-                },
-                "choices": ["fr", "en"],
-                "default": "fr"
+                    "en": "Choose a name for the server",
+                    "fr": "Choisissez un nom pour le serveur"
+                }
             },
             {
-                "name": "password",
-                "type": "password",
-                "help": {
-                    "en": "Use the help field to add an information for the admin about this question.",
-                    "fr": "Utilisez le champ aide pour ajouter une information à l'intention de l'administrateur à propos de cette question."
+                "name": "description",
+                "type": "string",
+                "default": "This is the best Veloren server",
+                "ask": {
+                    "en": "Choose a description for the server",
+                    "fr": "Choisissez une déscription pour le serveur"
+                }
+            },
+            {
+                "name": "auth_server_address",
+                "type": "string",
+                "default": "https://auth.veloren.net",
+                "ask": {
+                    "en": "Choose an auth server",
+                    "fr": "Choisissez un serveur d'authentification"
+                }
+            },
+            {
+                "name": "max_players",
+                "type": "string",
+                "default": "100",
+                "ask": {
+                    "en": "Set the maximum number of players that can connect to the server concurrently",
+                    "fr": "Choisissez le nombre maximum de joueurs qui peuvent être connectès en méme temps"
+                }
+            },
+            {
+                "name": "max_view_distance",
+                "type": "string",
+                "default": "30",
+                "ask": {
+                    "en": "Choose the maximum view distance that clients may request",
+                    "fr": "Choisissez la distance maximale de visualisation que peuvent demander les clients"
+                }
+            },
+            {
+                "name": "max_player_group_size",
+                "type": "string",
+                "default": "6",
+                "ask": {
+                    "en": "Choose the maximum size of player groups",
+                    "fr": "Choisissez le nombre maximal de joueurs dans un groupe"
+                }
+            },
+            {
+                "name": "generate_custom_world",
+                "type": "boolean",
+                "default": false,
+                "ask": {
+                    "en": "Generate a custom world map? (resource-intensive)",
+                    "fr": "Générer une carte personnalisée ? (nécessite beaucoup de ressources)"
+                }
+            },
+            {
+                "name": "world_seed",
+                "type": "string",
+                "default": "59686",
+                "ask": {
+                    "en": "Choose a seed for the custom map",
+                    "fr": "Choisir une graine pour la carte personnalisé"
+                }
+            },
+            {
+                "name": "world_map_size_lg_x",
+                "type": "string",
+                "optional": true,
+                "ask": {
+                    "en": "Choose the length of the east-west dimension of the custom map (base 2 logarithm)",
+                    "fr": "Choisir la longueur de la dimension est-ouest de la carte personnalisé (logarithme base 2)"
                 },
-                "example": "Choose a password"
+                "help": {
+                    "en": "Current default is 10, leave blank for unchanged",
+                    "fr": "Valeur par défault actuelle est 10, laisser vide pour ne pas changer"
+                }
+            },
+            {
+                "name": "world_map_size_lg_y",
+                "type": "string",
+                "optional": true,
+                "ask": {
+                    "en": "Choose the length of the north-south dimension of the custom map (base 2 logarithm)",
+                    "fr": "Choisir la longueur de la dimension nord-sud de la carte personnalisé (logarithme base 2)"
+                },
+                "help": {
+                    "en": "Current default is 10. Leave blank for unchanged",
+                    "fr": "Valeur par défault actuelle est 10. Laisser vide pour ne pas changer"
+                }
+            },
+            {
+                "name": "continent_scale_hack",
+                "type": "string",
+                "optional": true,
+                "ask": {
+                    "en": "Choose the level of continent detail of the custom map",
+                    "fr": "Choisir le niveau de détail des continents de la carte personnalisé"
+                },
+                "help": {
+                    "en": "Current default is 1.0, 4.0 gives an Earth-like result. Leave blank for unchanged",
+                    "fr": "Valeur par défault actuelle est 1.0, 4.0 donne un résultat semblable à la Terre. Laisser vide pour ne pas changer"
+                }
+            },
+            {
+                "name": "days_in_month",
+                "type": "string",
+                "optional": true,
+                "ask": {
+                    "en": "Choose the number of days in a month for the custom map economy simulation",
+                    "fr": "Choisir le nombre de jours par mois pour la simulation économique de la carte personnalisé"
+                },
+                "help": {
+                    "en": "Current default is 30.0. Leave blank for unchanged",
+                    "fr": "Valeur par défault actuelle est 30.0. Laisser vide pour ne pas changer"
+                }
+            },
+            {
+                "name": "months_in_year",
+                "type": "string",
+                "optional": true,
+                "ask": {
+                    "en": "Choose the number of months in a year for the custom map economy simulation",
+                    "fr": "Choisir le nombre de mois par an pour la simulation économique de la carte personnalisé"
+                },
+                "help": {
+                    "en": "Current default is 12.0. Leave blank for unchanged",
+                    "fr": "Valeur par défault actuelle est 12.0. Laisser vide pour ne pas changer"
+                }
+            },
+            {
+                "name": "months_in_tick",
+                "type": "string",
+                "optional": true,
+                "ask": {
+                    "en": "Choose the number of months per tick for the custom map economy simulation",
+                    "fr": "Choisir le nombre de mois par étape pour la simulation économique de la carte personnalisé"
+                },
+                "help": {
+                    "en": "Current default is 3.0. Leave blank for unchanged",
+                    "fr": "Valeur par défault actuelle est 3.0. Laisser vide pour ne pas changer"
+                }
+            },
+            {
+                "name": "years_in_history",
+                "type": "string",
+                "optional": true,
+                "ask": {
+                    "en": "Choose the number of years in history for the custom map economy simulation",
+                    "fr": "Choisir le nombre d'années dans l'histoire pour la simulation économique de la carte personnalisé"
+                },
+                "help": {
+                    "en": "Current default is 500.0. Leave blank for unchanged",
+                    "fr": "Valeur par défault actuelle est 500.0. Laisser vide pour ne pas changer"
+                }
+            },
+            {
+                "name": "generate_economy_csv",
+                "type": "boolean",
+                "default": false,
+                "ask": {
+                    "en": "Choose whether to generate economy data CSV the custom map economy simulation",
+                    "fr": "Choisir si générer un CSV de données pour la simulation économique de la carte personnalisé"
+                }
+            },
+            {
+                "name": "allow_inter_site_trade",
+                "type": "boolean",
+                "default": true,
+                "ask": {
+                    "en": "Choose whether to allow inter-site trade for the custom map economy simulation",
+                    "fr": "Choisir si permettre le commerce entre sites pour la simulation économique de la carte personnalisé"
+                }
             }
         ]
     }

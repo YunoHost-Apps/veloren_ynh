@@ -1,13 +1,15 @@
 [Unit]
-Description=Small description of the service
+Description=Veloren game server
 After=network.target
 
 [Service]
 Type=simple
 User=__APP__
 Group=__APP__
-WorkingDirectory=__FINALPATH__/
-ExecStart=__FINALPATH__/script
+WorkingDirectory=__DATA_PATH__/
+ExecStart=__FINALPATH__/target/release/veloren-server-cli --basic
+KillSignal=SIGUSR1
+TimeoutStopSec=150
 StandardOutput=append:/var/log/__APP__/__APP__.log
 StandardError=inherit
 
