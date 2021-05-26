@@ -1,0 +1,43 @@
+# See here for more information
+# https://github.com/YunoHost/package_check#syntax-check_process-file
+
+;; Test complet
+	; Manifest
+		server_name=
+		description=
+		auth_server_address=
+		max_players=
+		max_view_distance=
+		max_player_group_size=
+		generate_custom_world=1
+		world_seed=15234
+		world_map_size_lg_x=9
+		world_map_size_lg_y=9
+		continent_scale_hack=4.0
+		days_in_month=31.0
+		months_in_year=14.0
+		months_in_tick=7.0
+		years_in_history=700.0
+		generate_economy_csv=1
+		allow_inter_site_trade=0
+	; Checks
+		pkg_linter=1
+		setup_sub_dir=0
+		setup_root=0
+		setup_nourl=1
+		setup_private=0
+		setup_public=0
+		upgrade=1
+		upgrade=0	from_commit=CommitHash
+		backup_restore=1
+		multi_instance=1
+		port_already_use=0
+		change_url=0
+;;; Options
+Email=
+Notification=none
+;;; Upgrade options
+	; commit=CommitHash
+		name=Name and date of the commit.
+		manifest_arg=generate_custom_world=1&
+

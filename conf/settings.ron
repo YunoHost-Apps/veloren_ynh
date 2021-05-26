@@ -1,0 +1,17 @@
+(
+    gameserver_address: "0.0.0.0:__PORT__",
+    metrics_address: "0.0.0.0:__METRICS_PORT__",
+    auth_server_address: __AUTH_SERVER_ADDRESS_STRING__,
+    max_players: __MAX_PLAYERS__,
+    world_seed: __WORLD_SEED__,
+    server_name: "__SERVER_NAME__",
+    start_time: 32400,
+    map_file: __MAP_FILE_STRING__,
+    max_view_distance: __MAX_VIEW_DISTANCE_STRING__,
+    banned_words_files: [],
+    max_player_group_size: __MAX_PLAYER_GROUP_SIZE__,
+    client_timeout: (
+        secs: 40,
+        nanos: 0,
+    ),
+)
