@@ -97,7 +97,7 @@ function compile_server {
 	pushd "$final_path"
 		sudo -u $app bash -c "
 			source ~/.cargo/env
-			NIX_GIT_HASH=\"1afe3b7d/2021-03-20-12:48\" NIX_GIT_TAG=\"v0.9.0\" VELOREN_ASSETS=\"$final_path/assets\"  RUSTFLAGS=\"-D warnings\" VELOREN_USERDATA_STRATEGY=system cargo build --bin veloren-server-cli --release --quiet 2>&1
+			NIX_GIT_HASH=\"cf2bdb20/2021-06-12-08:55\" NIX_GIT_TAG=\"v0.10.0\" VELOREN_ASSETS=\"$final_path/assets\"  RUSTFLAGS=\"-D warnings\" VELOREN_USERDATA_STRATEGY=system cargo build --bin veloren-server-cli --release --quiet 2>&1
 		"
 	popd
 

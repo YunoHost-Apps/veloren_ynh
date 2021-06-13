@@ -6,7 +6,7 @@
         "en": "Multiplayer voxel RPG inspired by games such as Cube World, Legend of Zelda: Breath of the Wild, Dwarf Fortress and Minecraft",
         "fr": "RPG voxel multijoueur inspiré de jeux tels que Cube World, Legend of Zelda : Breath of the Wild, Dwarf Fortress et Minecraft"
     },
-    "version": "0.9.0~ynh1",
+    "version": "0.10.0~ynh1",
     "url": "https://veloren.net",
     "upstream": {
         "license": "GPL-3.0-only",
@@ -135,8 +135,8 @@
                     "fr": "Choisir le niveau de détail des continents de la carte personnalisé"
                 },
                 "help": {
-                    "en": "Current default is 1.0, 4.0 gives an Earth-like result. Leave blank for unchanged",
-                    "fr": "Valeur par défault actuelle est 1.0, 4.0 donne un résultat semblable à la Terre. Laisser vide pour ne pas changer"
+                    "en": "Current default is 2.0, 4.0 gives an Earth-like result. Leave blank for unchanged",
+                    "fr": "Valeur par défault actuelle est 2.0, 4.0 donne un résultat semblable à la Terre. Laisser vide pour ne pas changer"
                 }
             },
             {
