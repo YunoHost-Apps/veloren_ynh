@@ -12,15 +12,6 @@ pkg_dependencies="cargo rustc ca-certificates librust-backtrace+libbacktrace-dev
 #=================================================
 
 function setup_source {
-	#if [ ! -d "$final_path" ]; then
-	#	git clone https://gitlab.com/veloren/veloren.git/ "$final_path" 2>&1
-	#fi
-
-	#pushd "$final_path"
-	#	git fetch --all 2>&1
-	#	git checkout v0.9.0 2>&1
-	#	git reset --hard 2>&1
-	#popd
 	ynh_setup_source --dest_dir="$final_path"
 
 	patch_source
