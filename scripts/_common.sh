@@ -103,7 +103,7 @@ function generate_custom_world {
 	add_configuration_files
 
 	pushd "$data_path"
-		grep -q "Server is ready to accept connections." <((sudo -u $app "$final_path/target/release/veloren-server-cli" --basic & echo $! >&3 ) 3>pid)
+		grep -q "Server is ready to accept connections." <((sudo -u $app "VELOREN_ASSETS=\"$final_path/assets\" $final_path/target/release/veloren-server-cli" --basic & echo $! >&3 ) 3>pid)
 		kill "$(<pid)"
 		fuser $port/tcp -k
 	popd
