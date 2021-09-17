@@ -13,7 +13,7 @@ Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour
 
 RPG voxel multijoueur inspiré de jeux tels que Cube World, Legend of Zelda : Breath of the Wild, Dwarf Fortress et Minecraft
 
-**Version incluse :** 0.10.0~ynh1
+**Version incluse :** 0.11.0~ynh1
 
 **Démo :** server.veloren.net:14004
 
