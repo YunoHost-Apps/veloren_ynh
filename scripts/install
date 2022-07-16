@@ -79,7 +79,7 @@ ynh_app_setting_set --app=$app --key=allow_inter_site_trade --value=$allow_inter
 #=================================================
 # STANDARD MODIFICATIONS
 #=================================================
-# FIND AND OPEN PORTS
+# FIND AND OPEN A PORT
 #=================================================
 ynh_script_progression --message="Finding an available port..." --weight=10
 
@@ -91,8 +91,6 @@ ynh_app_setting_set --app=$app --key=port --value=$port
 metrics_port=$(ynh_find_port --port=$(expr $port + 1))
 ynh_print_info --message="Prometheus metrics will be available at 127.0.0.1:$metrics_port/metrics"
 ynh_app_setting_set --app=$app --key=metrics_port --value=$metrics_port
-
-# Expose port publicly
 
 # Open the port
 ynh_script_progression --message="Configuring firewall..." --weight=10
@@ -145,8 +143,9 @@ if [ $generate_custom_world -eq 1 ]; then
 fi
 
 #=================================================
-# ADD CONFIGURATIONS
+# ADD A CONFIGURATION
 #=================================================
+ynh_script_progression --message="Adding a configuration file..."
 
 add_configuration_files
 

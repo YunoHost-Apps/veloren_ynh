@@ -5,14 +5,14 @@
 #=================================================
 
 # dependencies used by the app
-pkg_dependencies="cargo rustc ca-certificates librust-backtrace+libbacktrace-dev build-essential git git-lfs"
+pkg_dependencies="ca-certificates librust-backtrace+libbacktrace-dev build-essential git git-lfs"
 
 #=================================================
 # PERSONAL HELPERS
 #=================================================
 
 function setup_source {
-	ynh_setup_source --dest_dir="$final_path"
+	ynh_setup_source --dest_dir="$final_path/build"
 
 	patch_source
 
@@ -27,42 +27,42 @@ function patch_source {
 		if [ -z "$world_map_size_lg_y" ]; then
 			world_map_size_lg_y="10"
 		fi
-		ynh_replace_string -m "MapSizeLg::new(Vec2 { x: [0-9]\{1,\}, y: [0-9]\{1,\} }" -r "MapSizeLg::new(Vec2 { x: $world_map_size_lg_x, y: $world_map_size_lg_y }" -f "$final_path/world/src/sim/mod.rs"
+		ynh_replace_string -m "MapSizeLg::new(Vec2 { x: [0-9]\{1,\}, y: [0-9]\{1,\} }" -r "MapSizeLg::new(Vec2 { x: $world_map_size_lg_x, y: $world_map_size_lg_y }" -f "$final_path/build/world/src/sim/mod.rs"
 	fi
 
 	if [ ! -z "$continent_scale_hack" ]; then
-		ynh_replace_string -m "continent_scale_hack = [0-9]\{1,\}\.[0-9]\{1,\}" -r "continent_scale_hack = $continent_scale_hack" -f "$final_path/world/src/sim/mod.rs"
+		ynh_replace_string -m "continent_scale_hack = [0-9]\{1,\}\.[0-9]\{1,\}" -r "continent_scale_hack = $continent_scale_hack" -f "$final_path/build/world/src/sim/mod.rs"
 	fi
 
 	if [ ! -z "$days_in_month" ]; then
-		ynh_replace_string -m "MONTH: f32 = [0-9]\{1,\}\.[0-9]\{1,\}" -r "MONTH: f32 = $days_in_month"  -f "$final_path/world/src/sim2/mod.rs"
+		ynh_replace_string -m "MONTH: f32 = [0-9]\{1,\}\.[0-9]\{1,\}" -r "MONTH: f32 = $days_in_month"  -f "$final_path/build/world/src/sim2/mod.rs"
 	fi
 
 	if [ ! -z "$months_in_year" ]; then
-		ynh_replace_string -m "YEAR: f32 = [0-9]\{1,\}\.[0-9]\{1,\}" -r "YEAR: f32 = $months_in_year"  -f "$final_path/world/src/sim2/mod.rs"
+		ynh_replace_string -m "YEAR: f32 = [0-9]\{1,\}\.[0-9]\{1,\}" -r "YEAR: f32 = $months_in_year"  -f "$final_path/build/world/src/sim2/mod.rs"
 	fi
 
 	if [ ! -z "$months_in_tick" ]; then
-		ynh_replace_string -m "TICK_PERIOD: f32 = [0-9]\{1,\}\.[0-9]\{1,\}" -r "TICK_PERIOD: f32 = $months_in_tick"  -f "$final_path/world/src/sim2/mod.rs"
+		ynh_replace_string -m "TICK_PERIOD: f32 = [0-9]\{1,\}\.[0-9]\{1,\}" -r "TICK_PERIOD: f32 = $months_in_tick"  -f "$final_path/build/world/src/sim2/mod.rs"
 	fi
 	
 	if [ ! -z "$years_in_history" ]; then
-		ynh_replace_string -m "HISTORY_DAYS: f32 = [0-9]\{1,\}\.[0-9]\{1,\}" -r "HISTORY_DAYS: f32 = $years_in_history"  -f "$final_path/world/src/sim2/mod.rs"
+		ynh_replace_string -m "HISTORY_DAYS: f32 = [0-9]\{1,\}\.[0-9]\{1,\}" -r "HISTORY_DAYS: f32 = $years_in_history"  -f "$final_path/build/world/src/sim2/mod.rs"
 	fi
 
 	if [ $generate_economy_csv -eq 1 ]; then
-		ynh_replace_special_string -m "GENERATE_CSV: bool = false" -r "GENERATE_CSV: bool = true" -f "$final_path/world/src/sim2/mod.rs"
+		ynh_replace_special_string -m "GENERATE_CSV: bool = false" -r "GENERATE_CSV: bool = true" -f "$final_path/build/world/src/sim2/mod.rs"
 	fi
 
 	if [ $allow_inter_site_trade -eq 0 ]; then
-		ynh_replace_special_string -m "INTER_SITE_TRADE: bool = true" -r "INTER_SITE_TRADE: bool = false" -f "$final_path/world/src/sim2/mod.rs"
+		ynh_replace_special_string -m "INTER_SITE_TRADE: bool = true" -r "INTER_SITE_TRADE: bool = false" -f "$final_path/build/world/src/sim2/mod.rs"
 	fi
 
 }
 
 function set_permissions {
 	mkdir -p "$final_path"
-	chown -R root:$app "$final_path"
+	chown -R $app:$app "$final_path"
 	chmod -R g=u,g-w,o-rwx "$final_path"
 
 	mkdir -p "$data_path"
@@ -74,25 +74,31 @@ function set_permissions {
 }
 
 function install_rust {
-	sudo -u $app bash -c '
-		curl https://sh.rustup.rs -sSf | sh -s -- -q -y 2>&1
-		source ~/.cargo/env
-		rustup toolchain install $(cat "'"$final_path/rust-toolchain"'") 2>&1
-	'
+	ynh_exec_warn_less ynh_exec_as "$app" RUSTUP_HOME="$final_path"/.rustup CARGO_HOME="$final_path"/.cargo bash -c 'curl -sSf -L https://static.rust-lang.org/rustup.sh | sh -s -- -y --default-toolchain stable'
 }
 
 function compile_server {
 	install_rust
 
 	chown -R $app:$app "$final_path"
-	pushd "$final_path"
-		sudo -u $app bash -c "
-			source ~/.cargo/env
-			NIX_GIT_HASH=\"cf2bdb20/2021-06-12-08:55\" NIX_GIT_TAG=\"v0.10.0\" VELOREN_ASSETS=\"$final_path/assets\"  RUSTFLAGS=\"-D warnings\" VELOREN_USERDATA_STRATEGY=system cargo build --bin veloren-server-cli --release --quiet 2>&1
-		"
+	export PATH="$PATH:$final_path/.cargo/bin:$final_path/.local/bin:/usr/local/sbin" 
+	pushd "$final_path/build"
+		ynh_exec_warn_less ynh_exec_as "$app" env PATH="$PATH" NIX_GIT_HASH="cf2bdb20/2021-06-12-08:55" NIX_GIT_TAG="v0.10.0" VELOREN_ASSETS="$final_path/assets"  RUSTFLAGS="-D warnings" VELOREN_USERDATA_STRATEGY=system cargo build --bin veloren-server-cli --release
 	popd
 
-	sudo -u $app ln -sf "$final_path/assets" "$data_path/assets"
+	ynh_secure_remove --file="$final_path/live"
+	mkdir -p "$final_path/live/assets/"
+	cp -af "$final_path/build/target/release/veloren-server-cli" "$final_path/live/veloren-server-cli"
+	cp -af "$final_path/build/assets/common" "$final_path/live/assets/common"
+	cp -af "$final_path/build/assets/server" "$final_path/live/assets/server"
+	cp -af "$final_path/build/assets/world" "$final_path/live/assets/world"
+
+	# Remove build files and rustup
+	ynh_secure_remove --file="$final_path/build"
+	ynh_secure_remove --file="$final_path/.cargo"
+	ynh_secure_remove --file="$final_path/.rustup"
+
+	ynh_exec_as $app ln -sf "$final_path/assets" "$data_path/assets"
 
 	set_permissions
 }
@@ -103,7 +109,7 @@ function generate_custom_world {
 	add_configuration_files
 
 	pushd "$data_path"
-		grep -q "Server is ready to accept connections." <((sudo -u $app VELOREN_ASSETS="$final_path/assets" $final_path/target/release/veloren-server-cli --basic & echo $! >&3 ) 3>pid)
+		grep -q "Server is ready to accept connections." <((ynh_exec_as $app VELOREN_ASSETS="$final_path/assets" $final_path/live/veloren-server-cli --basic & echo $! >&3 ) 3>pid)
 		kill "$(<pid)"
 		fuser $port/tcp -k
 	popd

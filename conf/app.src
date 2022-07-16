@@ -1,7 +1,7 @@
-SOURCE_URL=https://gitlab.com/veloren/veloren/-/archive/v0.11.0/veloren-v0.11.0.tar.gz
-SOURCE_SUM=a2a840fcbbafaaa429c8c2ffce56488de099ed71e310fcae6d56b927409d1f8f
+SOURCE_URL=https://gitlab.com/veloren/veloren/-/archive/v0.12.0/veloren-v0.12.0.tar.gz
+SOURCE_SUM=10fc0d1cb123ff9caf4ff90412df5241306780dbd2a43be1e37a0c8bac437697
 SOURCE_SUM_PRG=sha256sum
 SOURCE_FORMAT=tar.gz
 SOURCE_IN_SUBDIR=true
-SOURCE_FILENAME=veloren-v0.11.0.tar.gz
+SOURCE_FILENAME=veloren-v0.12.0.tar.gz
 SOURCE_EXTRACT=true
