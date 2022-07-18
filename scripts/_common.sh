@@ -109,7 +109,7 @@ function generate_custom_world {
 	add_configuration_files
 
 	pushd "$data_path"
-		grep -q "Server is ready to accept connections." <((ynh_exec_as $app VELOREN_ASSETS="$final_path/assets" $final_path/live/veloren-server-cli --basic & echo $! >&3 ) 3>pid)
+		grep -q "Server is ready to accept connections." <((ynh_exec_as $app VELOREN_ASSETS="$final_path/assets" $final_path/live/veloren-server-cli & echo $! >&3 ) 3>pid)
 		kill "$(<pid)"
 		fuser $port/tcp -k
 	popd
