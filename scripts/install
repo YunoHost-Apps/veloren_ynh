@@ -140,14 +140,11 @@ if [ $generate_custom_world -eq 1 ]; then
 	ynh_script_progression --message="Generating custom world..." --weight=100
 
 	generate_custom_world
+else
+	ynh_script_progression --message="Adding a configuration file..."
+
+	add_configuration_files
 fi
-
-#=================================================
-# ADD A CONFIGURATION
-#=================================================
-ynh_script_progression --message="Adding a configuration file..."
-
-add_configuration_files
 
 #=================================================
 # SETUP SYSTEMD
