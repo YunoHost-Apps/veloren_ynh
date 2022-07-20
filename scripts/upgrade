@@ -21,6 +21,7 @@ get_app_settings
 #=================================================
 # CHECK VERSION
 #=================================================
+ynh_script_progression --message="Checking version..."
 
 upgrade_type=$(ynh_check_app_version_changed)
 
@@ -30,12 +31,11 @@ upgrade_type=$(ynh_check_app_version_changed)
 ynh_script_progression --message="Backing up the app before upgrading (may take a while)..." --weight=10
 
 # Backup the current version of the app
-ynh_backup_before_upgrade
+#ynh_backup_before_upgrade
 ynh_clean_setup () {
+	ynh_clean_check_starting
 	# Restore it if the upgrade fails
 	ynh_restore_upgradebackup
-
-	ynh_clean_check_starting
 }
 # Exit if an error occurs during the execution of the script
 ynh_abort_if_errors
@@ -50,19 +50,27 @@ ynh_script_progression --message="Stopping a systemd service..." --weight=10
 ynh_systemd_action --service_name=$app --action="stop" --log_path="/var/log/$app/$app.log"
 
 #=================================================
+# ENSURE DOWNWARD COMPATIBILITY
+#=================================================
+ynh_script_progression --message="Ensuring downward compatibility..."
+
+if [ ! -d "$final_path/live" ] 
+then
+	tempdir=/opt/yunohost/$(ynh_string_random --length=8)
+	mkdir -p $tempdir
+	mv $final_path/ $tempdir/
+	mkdir -p $final_path
+	mv $tempdir/$app $final_path/live/
+	ynh_secure_remove --file="$tempdir"
+fi
+
+#=================================================
 # CREATE DEDICATED USER
 #=================================================
 ynh_script_progression --message="Making sure dedicated system user exists..." --weight=10
 
 # Create a dedicated user (if not existing)
 ynh_system_user_create --username=$app --home_dir="$data_path"
-
-#=================================================
-# UPGRADE DEPENDENCIES
-#=================================================
-ynh_script_progression --message="Upgrading dependencies..." --weight=10
-
-ynh_install_app_dependencies $pkg_dependencies
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
@@ -75,6 +83,13 @@ then
 	# Download, check integrity, uncompress and patch the source from app.src
 	setup_source
 fi
+
+#=================================================
+# UPGRADE DEPENDENCIES
+#=================================================
+ynh_script_progression --message="Upgrading dependencies..." --weight=10
+
+ynh_install_app_dependencies $pkg_dependencies
 
 #=================================================
 # SPECIFIC UPGRADE
@@ -95,13 +110,11 @@ if [ $generate_custom_world -eq 1 ]; then
 	ynh_script_progression --message="Generating custom world..." --weight=100
 
 	generate_custom_world
+else
+	ynh_script_progression --message="Adding a configuration file..."
+
+	add_configuration_files
 fi
-
-#=================================================
-# ADD CONFIGURATIONS
-#=================================================
-
-add_configuration_files
 
 #=================================================
 # SETUP SYSTEMD
