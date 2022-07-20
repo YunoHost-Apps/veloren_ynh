@@ -83,7 +83,7 @@ function compile_server {
 	chown -R $app:$app "$final_path"
 	export PATH="$PATH:$final_path/.cargo/bin:$final_path/.local/bin:/usr/local/sbin" 
 	pushd "$final_path/build"
-		ynh_exec_warn_less ynh_exec_as "$app" env PATH="$PATH" NIX_GIT_HASH="cf2bdb20/2021-06-12-08:55" NIX_GIT_TAG="v0.10.0" VELOREN_ASSETS="$final_path/assets"  RUSTFLAGS="-D warnings" VELOREN_USERDATA_STRATEGY=system cargo build --bin veloren-server-cli --release
+		ynh_exec_warn_less ynh_exec_as "$app" env PATH="$PATH" NIX_GIT_HASH="cf2bdb20/2021-06-12-08:55" NIX_GIT_TAG="v0.10.0" VELOREN_ASSETS="$final_path/build/assets"  RUSTFLAGS="-D warnings" VELOREN_USERDATA_STRATEGY=system cargo build --bin veloren-server-cli --release
 	popd
 
 	ynh_secure_remove --file="$final_path/live"
