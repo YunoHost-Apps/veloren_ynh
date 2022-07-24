@@ -98,6 +98,7 @@ function compile_server {
 	ynh_secure_remove --file="$final_path/.cargo"
 	ynh_secure_remove --file="$final_path/.rustup"
 
+	ynh_secure_remove --file="$data_path/assets"
 	ynh_exec_as $app ln -sf "$final_path/live/assets" "$data_path/assets"
 
 	set_permissions
