@@ -154,8 +154,8 @@ function get_app_settings {
 	data_path=$(ynh_app_setting_get --app=$app --key=data_path)
 	port=$(ynh_app_setting_get --app=$app --key=port)
 	metrics_port=$(ynh_app_setting_get --app=$app --key=metrics_port)
-	server_name=$(ynh_app_setting_get --app=$app --key=server_name)
-	description=$(ynh_app_setting_get --app=$app --key=description)
+	server_name="$(ynh_app_setting_get --app=$app --key=server_name)"
+	description="$(ynh_app_setting_get --app=$app --key=description)"
 	auth_server_address=$(ynh_app_setting_get --app=$app --key=auth_server_address)
 	max_players=$(ynh_app_setting_get --app=$app --key=max_players)
 	max_view_distance=$(ynh_app_setting_get --app=$app --key=max_view_distance)
