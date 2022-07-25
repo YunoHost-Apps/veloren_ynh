@@ -31,7 +31,7 @@ upgrade_type=$(ynh_check_app_version_changed)
 ynh_script_progression --message="Backing up the app before upgrading (may take a while)..." --weight=10
 
 # Backup the current version of the app
-#ynh_backup_before_upgrade
+ynh_backup_before_upgrade
 ynh_clean_setup () {
 	ynh_clean_check_starting
 	# Restore it if the upgrade fails
