@@ -1,5 +1,5 @@
 SOURCE_URL=https://gitlab.com/veloren/veloren/-/archive/v0.13.0/veloren-v0.13.0.tar.gz
-SOURCE_SUM=10fc0d1cb123ff9caf4ff90412df5241306780dbd2a43be1e37a0c8bac437697
+SOURCE_SUM=6864e9ac190b07eae7d5ea966472d120037153af086f64cc8a7966a59a5f2cfe
 SOURCE_SUM_PRG=sha256sum
 SOURCE_FORMAT=tar.gz
 SOURCE_IN_SUBDIR=true
