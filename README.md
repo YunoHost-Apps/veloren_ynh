@@ -18,7 +18,7 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 Multiplayer voxel RPG inspired by games such as Cube World, Legend of Zelda: Breath of the Wild, Dwarf Fortress and Minecraft
 
 
-**Shipped version:** 0.12.0~ynh1
+**Shipped version:** 0.13.0~ynh1
 
 **Demo:** server.veloren.net:14004
 
@@ -31,9 +31,9 @@ Multiplayer voxel RPG inspired by games such as Cube World, Legend of Zelda: Bre
 Veloren is in pre-alpha, il y aura des bugs.
 
 This package provides the last "release" version of Veloren, which is older than that of the official server. You will need to download the corresponding version of the client:
- * [Windows x64](https://gitlab.com/veloren/veloren/-/jobs/artifacts/v0.12.0/download?job=windows)
- * [Linux x64](https://gitlab.com/veloren/veloren/-/jobs/artifacts/v0.12.0/download?job=linux)
- * [MacOS x64](https://gitlab.com/veloren/veloren/-/jobs/artifacts/v0.12.0/download?job=macos)
+ * [Windows x64](https://gitlab.com/veloren/veloren/-/jobs/artifacts/v0.13.0/download?job=windows)
+ * [Linux x64](https://gitlab.com/veloren/veloren/-/jobs/artifacts/v0.13.0/download?job=linux)
+ * [MacOS x64](https://gitlab.com/veloren/veloren/-/jobs/artifacts/v0.13.0/download?job=macos)
 
 ## Documentation and resources
 

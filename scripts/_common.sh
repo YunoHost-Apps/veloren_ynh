@@ -7,6 +7,8 @@
 # dependencies used by the app
 pkg_dependencies="ca-certificates librust-backtrace+libbacktrace-dev build-essential git git-lfs"
 
+nix_git_hash="34ae5b9d/2022-07-23-08:55"
+
 #=================================================
 # PERSONAL HELPERS
 #=================================================
@@ -74,6 +76,10 @@ function set_permissions {
 }
 
 function install_rust {
+	ynh_secure_remove --file="$final_path/.cargo"
+	ynh_secure_remove --file="$final_path/.rustup"
+	ynh_secure_remove --file="$data_path/.cargo"
+	ynh_secure_remove --file="$data_path/.rustup"
 	ynh_exec_warn_less ynh_exec_as "$app" RUSTUP_HOME="$final_path"/.rustup CARGO_HOME="$final_path"/.cargo bash -c 'curl -sSf -L https://static.rust-lang.org/rustup.sh | sh -s -- -y --default-toolchain stable'
 }
 
@@ -83,7 +89,7 @@ function compile_server {
 	chown -R $app:$app "$final_path"
 	export PATH="$PATH:$final_path/.cargo/bin:$final_path/.local/bin:/usr/local/sbin" 
 	pushd "$final_path/build"
-		ynh_exec_warn_less ynh_exec_as "$app" env PATH="$PATH" NIX_GIT_HASH="cf2bdb20/2021-06-12-08:55" NIX_GIT_TAG="v0.10.0" VELOREN_ASSETS="$final_path/build/assets"  RUSTFLAGS="-D warnings" VELOREN_USERDATA_STRATEGY=system cargo build --bin veloren-server-cli --release
+		ynh_exec_warn_less ynh_exec_as "$app" env PATH="$PATH" NIX_GIT_HASH="$nix_git_hash" NIX_GIT_TAG="v$(ynh_app_upstream_version)" VELOREN_ASSETS="$final_path/build/assets"  RUSTFLAGS="-D warnings" VELOREN_USERDATA_STRATEGY=system cargo build --bin veloren-server-cli --release
 	popd
 
 	ynh_secure_remove --file="$final_path/live"
