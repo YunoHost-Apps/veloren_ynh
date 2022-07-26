@@ -76,20 +76,24 @@ function set_permissions {
 }
 
 function install_rust {
-	ynh_secure_remove --file="$final_path/.cargo"
-	ynh_secure_remove --file="$final_path/.rustup"
 	ynh_secure_remove --file="$data_path/.cargo"
 	ynh_secure_remove --file="$data_path/.rustup"
-	ynh_exec_warn_less ynh_exec_as "$app" RUSTUP_HOME="$final_path"/.rustup CARGO_HOME="$final_path"/.cargo bash -c 'curl -sSf -L https://static.rust-lang.org/rustup.sh | sh -s -- -y --default-toolchain stable'
+	ynh_exec_warn_less ynh_exec_as "$app" bash -c '
+	curl https://sh.rustup.rs -sSf | sh -s -- -q -y
+	source ~/.cargo/env
+	rustup toolchain install $(cat "'"$final_path/build/rust-toolchain"'")
+	'
 }
 
 function compile_server {
 	install_rust
 
 	chown -R $app:$app "$final_path"
-	export PATH="$PATH:$final_path/.cargo/bin:$final_path/.local/bin:/usr/local/sbin" 
 	pushd "$final_path/build"
-		ynh_exec_warn_less ynh_exec_as "$app" env PATH="$PATH" NIX_GIT_HASH="$nix_git_hash" NIX_GIT_TAG="v$(ynh_app_upstream_version)" VELOREN_ASSETS="$final_path/build/assets"  RUSTFLAGS="-D warnings" VELOREN_USERDATA_STRATEGY=system cargo build --bin veloren-server-cli --release
+		ynh_exec_warn_less ynh_exec_as "$app" bash -c "
+			source ~/.cargo/env
+			NIX_GIT_HASH=\"$nix_git_hash\" NIX_GIT_TAG=\"v$(ynh_app_upstream_version)\" VELOREN_ASSETS=\"$final_path/build/assets\"  RUSTFLAGS=\"-D warnings\" VELOREN_USERDATA_STRATEGY=system cargo build --bin veloren-server-cli --release
+		"
 	popd
 
 	ynh_secure_remove --file="$final_path/live"
@@ -101,8 +105,8 @@ function compile_server {
 
 	# Remove build files and rustup
 	ynh_secure_remove --file="$final_path/build"
-	ynh_secure_remove --file="$final_path/.cargo"
-	ynh_secure_remove --file="$final_path/.rustup"
+	ynh_secure_remove --file="$data_path/.cargo"
+	ynh_secure_remove --file="$data_path/.rustup"
 
 	ynh_secure_remove --file="$data_path/assets"
 	ynh_exec_as $app ln -sf "$final_path/live/assets" "$data_path/assets"
