@@ -5,7 +5,7 @@ It shall NOT be edited by hand.
 
 # Veloren server for YunoHost
 
-[![Integration level](https://dash.yunohost.org/integration/veloren.svg)](https://dash.yunohost.org/appci/app/veloren) ![](https://ci-apps.yunohost.org/ci/badges/veloren.status.svg) ![](https://ci-apps.yunohost.org/ci/badges/veloren.maintain.svg)  
+[![Integration level](https://dash.yunohost.org/integration/veloren.svg)](https://dash.yunohost.org/appci/app/veloren) ![Working status](https://ci-apps.yunohost.org/ci/badges/veloren.status.svg) ![Maintenance status](https://ci-apps.yunohost.org/ci/badges/veloren.maintain.svg)  
 [![Install Veloren server with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=veloren)
 
 *[Lire ce readme en français.](./README_fr.md)*
@@ -15,7 +15,7 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 
 ## Overview
 
-Multiplayer voxel RPG inspired by games such as Cube World, Legend of Zelda: Breath of the Wild, Dwarf Fortress and Minecraft
+Multiplayer voxel RPG
 
 **Shipped version:** 0.11.0~ynh1
 
@@ -23,7 +23,7 @@ Multiplayer voxel RPG inspired by games such as Cube World, Legend of Zelda: Bre
 
 ## Screenshots
 
-![](./doc/screenshots/veloren.png)
+![Screenshot of Veloren server](./doc/screenshots/veloren.png)
 
 ## Disclaimers / important information
 
@@ -36,22 +36,23 @@ This package provides the last "release" version of Veloren, which is older than
 
 ## Documentation and resources
 
-* Official app website: https://veloren.net/
-* Official user documentation: https://book.veloren.net/players/
-* Official admin documentation: https://book.veloren.net/players/hosting-a-server.html
-* Upstream app code repository: https://gitlab.com/veloren/veloren
-* YunoHost documentation for this app: https://yunohost.org/app_veloren
-* Report a bug: https://github.com/YunoHost-Apps/veloren_ynh/issues
+* Official app website: <https://veloren.net/>
+* Official user documentation: <https://book.veloren.net/players/>
+* Official admin documentation: <https://book.veloren.net/players/hosting-a-server.html>
+* Upstream app code repository: <https://gitlab.com/veloren/veloren>
+* YunoHost documentation for this app: <https://yunohost.org/app_veloren>
+* Report a bug: <https://github.com/YunoHost-Apps/veloren_ynh/issues>
 
 ## Developer info
 
 Please send your pull request to the [testing branch](https://github.com/YunoHost-Apps/veloren_ynh/tree/testing).
 
 To try the testing branch, please proceed like that.
-```
+
+``` bash
 sudo yunohost app install https://github.com/YunoHost-Apps/veloren_ynh/tree/testing --debug
 or
 sudo yunohost app upgrade veloren -u https://github.com/YunoHost-Apps/veloren_ynh/tree/testing --debug
 ```
 
-**More info regarding app packaging:** https://yunohost.org/packaging_apps
+**More info regarding app packaging:** <https://yunohost.org/packaging_apps>
