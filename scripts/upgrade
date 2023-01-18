@@ -12,7 +12,7 @@ source /usr/share/yunohost/helpers
 #=================================================
 # LOAD SETTINGS
 #=================================================
-ynh_script_progression --message="Loading installation settings..." --weight=10
+ynh_script_progression --message="Loading installation settings..." --weight=1
 
 app=$YNH_APP_INSTANCE_NAME
 
@@ -27,7 +27,7 @@ upgrade_type=$(ynh_check_app_version_changed)
 #=================================================
 # BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
 #=================================================
-ynh_script_progression --message="Backing up the app before upgrading (may take a while)..." --weight=10
+ynh_script_progression --message="Backing up the app before upgrading (may take a while)..." --weight=1
 
 # Backup the current version of the app
 ynh_backup_before_upgrade
@@ -45,14 +45,14 @@ ynh_abort_if_errors
 #=================================================
 # STOP SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Stopping a systemd service..." --weight=10
+ynh_script_progression --message="Stopping a systemd service..." --weight=1
 
 ynh_systemd_action --service_name=$app --action="stop" --log_path="/var/log/$app/$app.log"
 
 #=================================================
 # CREATE DEDICATED USER
 #=================================================
-ynh_script_progression --message="Making sure dedicated system user exists..." --weight=10
+ynh_script_progression --message="Making sure dedicated system user exists..." --weight=1
 
 # Create a dedicated user (if not existing)
 ynh_system_user_create --username=$app --home_dir="$data_path"
@@ -60,7 +60,7 @@ ynh_system_user_create --username=$app --home_dir="$data_path"
 #=================================================
 # UPGRADE DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Upgrading dependencies..." --weight=10
+ynh_script_progression --message="Upgrading dependencies..." --weight=1
 
 ynh_install_app_dependencies $pkg_dependencies
 
@@ -70,7 +70,7 @@ ynh_install_app_dependencies $pkg_dependencies
 
 if [ "$upgrade_type" == "UPGRADE_APP" ]
 then
-	ynh_script_progression --message="Upgrading source files..." --weight=100
+	ynh_script_progression --message="Upgrading source files..." --weight=10
 
 	# Download, check integrity, uncompress and patch the source from app.src
 	setup_source
@@ -81,7 +81,7 @@ fi
 #=================================================
 # COMPILE SERVER
 #=================================================
-ynh_script_progression --message="Compiling server..." --weight=100
+ynh_script_progression --message="Compiling server..." --weight=10
 
 compile_server
 
@@ -92,7 +92,7 @@ compile_server
 map_generated=0
 
 if [ $generate_custom_world -eq 1 ]; then
-	ynh_script_progression --message="Generating custom world..." --weight=100
+	ynh_script_progression --message="Generating custom world..." --weight=10
 
 	generate_custom_world
 fi
@@ -106,7 +106,7 @@ add_configuration_files
 #=================================================
 # SETUP SYSTEMD
 #=================================================
-ynh_script_progression --message="Upgrading systemd configuration..." --weight=10
+ynh_script_progression --message="Upgrading systemd configuration..." --weight=1
 
 # Create a dedicated systemd config
 ynh_add_systemd_config
@@ -116,7 +116,7 @@ ynh_add_systemd_config
 #=================================================
 # SETUP LOGROTATE
 #=================================================
-ynh_script_progression --message="Upgrading logrotate configuration..." --weight=10
+ynh_script_progression --message="Upgrading logrotate configuration..." --weight=1
 
 # Use logrotate to manage app-specific logfile(s)
 ynh_use_logrotate --non-append
@@ -131,7 +131,7 @@ yunohost service add $app --description="Veloren game server" --needs_exposed_po
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Starting a systemd service..." --weight=35
+ynh_script_progression --message="Starting a systemd service..." --weight=3
 
 ynh_systemd_action --service_name=$app --action="start" --line_match="Server is ready to accept connections." --log_path="/var/log/$app/$app.log"
 

@@ -46,17 +46,18 @@ app=$YNH_APP_INSTANCE_NAME
 #=================================================
 # CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
 #=================================================
-ynh_script_progression --message="Validating installation parameters..." --weight=10
+ynh_script_progression --message="Validating installation parameters..." --weight=1
 
 final_path=/opt/yunohost/$app
 test ! -e "$final_path" || ynh_die --message="This path already contains a folder"
+
 data_path=/home/yunohost.app/$app
 test ! -e "$data_path" || ynh_die --message="This path already contains a folder"
 
 #=================================================
 # STORE SETTINGS FROM MANIFEST
 #=================================================
-ynh_script_progression --message="Storing installation settings..." --weight=10
+ynh_script_progression --message="Storing installation settings..." --weight=1
 
 ynh_app_setting_set --app=$app --key=server_name --value=$server_name
 ynh_app_setting_set --app=$app --key=description --value=$description
@@ -81,7 +82,7 @@ ynh_app_setting_set --app=$app --key=allow_inter_site_trade --value=$allow_inter
 #=================================================
 # FIND AND OPEN PORTS
 #=================================================
-ynh_script_progression --message="Finding an available port..." --weight=10
+ynh_script_progression --message="Finding an available port..." --weight=1
 
 # Find an available port
 port=$(ynh_find_port --port=14004)
@@ -95,20 +96,20 @@ ynh_app_setting_set --app=$app --key=metrics_port --value=$metrics_port
 # Expose port publicly
 
 # Open the port
-ynh_script_progression --message="Configuring firewall..." --weight=10
+ynh_script_progression --message="Configuring firewall..." --weight=1
 ynh_exec_warn_less yunohost firewall allow --no-upnp Both $port
 
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Installing dependencies..." --weight=20
+ynh_script_progression --message="Installing dependencies..." --weight=2
 
 ynh_install_app_dependencies $pkg_dependencies
 
 #=================================================
 # CREATE DEDICATED USER
 #=================================================
-ynh_script_progression --message="Configuring system user..." --weight=10
+ynh_script_progression --message="Configuring system user..." --weight=1
 
 # Create a system user
 ynh_system_user_create --username=$app --home_dir="$data_path"
@@ -116,7 +117,7 @@ ynh_system_user_create --username=$app --home_dir="$data_path"
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
-ynh_script_progression --message="Setting up source files..." --weight=100
+ynh_script_progression --message="Setting up source files..." --weight=10
 
 ynh_app_setting_set --app=$app --key=final_path --value=$final_path
 ynh_app_setting_set --app=$app --key=data_path --value=$data_path
@@ -128,7 +129,7 @@ setup_source
 #=================================================
 # COMPILE SERVER
 #=================================================
-ynh_script_progression --message="Compiling server..." --weight=100
+ynh_script_progression --message="Compiling server..." --weight=10
 
 compile_server
 
@@ -139,7 +140,7 @@ compile_server
 map_generated=0
 
 if [ $generate_custom_world -eq 1 ]; then
-	ynh_script_progression --message="Generating custom world..." --weight=100
+	ynh_script_progression --message="Generating custom world..." --weight=10
 
 	generate_custom_world
 fi
@@ -153,7 +154,7 @@ add_configuration_files
 #=================================================
 # SETUP SYSTEMD
 #=================================================
-ynh_script_progression --message="Configuring a systemd service..." --weight=10
+ynh_script_progression --message="Configuring a systemd service..." --weight=1
 
 # Create a dedicated systemd config
 ynh_add_systemd_config
@@ -163,7 +164,7 @@ ynh_add_systemd_config
 #=================================================
 # SETUP LOGROTATE
 #=================================================
-ynh_script_progression --message="Configuring log rotation..."  --weight=10
+ynh_script_progression --message="Configuring log rotation..."  --weight=1
 
 # Use logrotate to manage application logfile(s)
 ynh_use_logrotate
@@ -171,14 +172,14 @@ ynh_use_logrotate
 #=================================================
 # INTEGRATE SERVICE IN YUNOHOST
 #=================================================
-ynh_script_progression --message="Integrating service in YunoHost..." --weight=10
+ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
 
 yunohost service add $app --description="Veloren game server" --needs_exposed_ports "$port" --log="/var/log/$app/$app.log"
 
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Starting a systemd service..." --weight=35
+ynh_script_progression --message="Starting a systemd service..." --weight=10
 
 # Start a systemd service
 ynh_systemd_action --service_name=$app --action="start" --line_match="Server is ready to accept connections." --log_path="/var/log/$app/$app.log"
