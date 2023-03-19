@@ -5,7 +5,8 @@ It shall NOT be edited by hand.
 
 # Veloren server pour YunoHost
 
-[![Niveau d’intégration](https://dash.yunohost.org/integration/veloren.svg)](https://dash.yunohost.org/appci/app/veloren) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/veloren.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/veloren.maintain.svg)  
+[![Niveau d’intégration](https://dash.yunohost.org/integration/veloren.svg)](https://dash.yunohost.org/appci/app/veloren) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/veloren.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/veloren.maintain.svg)
+
 [![Installer Veloren server avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=veloren)
 
 *[Read this readme in english.](./README.md)*
