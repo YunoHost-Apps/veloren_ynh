@@ -22,7 +22,7 @@
         "email": "jules.bertholet@gmail.com"
     },
     "requirements": {
-        "yunohost": ">= 11.0.9"
+        "yunohost": ">= 11.1.15"
     },
     "multi_instance": true,
     "services": [],
