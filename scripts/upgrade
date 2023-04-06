@@ -60,7 +60,7 @@ ynh_system_user_create --username=$app --home_dir="$data_path"
 #=================================================
 # UPGRADE DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Upgrading dependencies..." --weight=10
+ynh_script_progression --message="Upgrading dependencies..." --weight=1
 
 ynh_install_app_dependencies $pkg_dependencies
 
@@ -70,7 +70,7 @@ ynh_install_app_dependencies $pkg_dependencies
 
 if [ "$upgrade_type" == "UPGRADE_APP" ]
 then
-	ynh_script_progression --message="Upgrading source files..." --weight=155
+	ynh_script_progression --message="Upgrading source files..." --weight=10
 
 	# Download, check integrity, uncompress and patch the source from app.src
 	setup_source
@@ -81,7 +81,7 @@ fi
 #=================================================
 # COMPILE SERVER
 #=================================================
-ynh_script_progression --message="Compiling server..." --weight=135
+ynh_script_progression --message="Compiling server..." --weight=10
 
 compile_server
 
@@ -92,7 +92,7 @@ compile_server
 map_generated=0
 
 if [ $generate_custom_world -eq 1 ]; then
-	ynh_script_progression --message="Generating custom world..." --weight=730
+	ynh_script_progression --message="Generating custom world..." --weight=10
 
 	generate_custom_world
 fi
@@ -109,7 +109,7 @@ add_configuration_files
 ynh_script_progression --message="Upgrading systemd configuration..." --weight=1
 
 # Create a dedicated systemd config
-ynh_add_systemd_config --others_var="data_path"
+ynh_add_systemd_config
 
 #=================================================
 # GENERIC FINALIZATION
@@ -124,14 +124,14 @@ ynh_use_logrotate --non-append
 #=================================================
 # INTEGRATE SERVICE IN YUNOHOST
 #=================================================
-ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
+ynh_script_progression --message="Integrating service in YunoHost..." --weight=10
 
 yunohost service add $app --description="Veloren game server" --needs_exposed_ports "$port" --log="/var/log/$app/$app.log"
 
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Starting a systemd service..." --weight=35
+ynh_script_progression --message="Starting a systemd service..." --weight=3
 
 ynh_systemd_action --service_name=$app --action="start" --line_match="Server is ready to accept connections." --log_path="/var/log/$app/$app.log"
 
