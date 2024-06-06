@@ -8,7 +8,7 @@ User=__APP__
 Group=__APP__
 WorkingDirectory=__DATA_PATH__/
 Environment=VELOREN_ASSETS=__FINAL_PATH__/
-ExecStart=__FINALPATH__/target/release/veloren-server-cli --basic
+ExecStart=__INSTALL_DIR__/target/release/veloren-server-cli --basic
 KillSignal=SIGUSR1
 TimeoutStopSec=150
 StandardOutput=append:/var/log/__APP__/__APP__.log

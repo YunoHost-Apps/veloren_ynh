@@ -1,0 +1,168 @@
+#:schema https://raw.githubusercontent.com/YunoHost/apps/master/schemas/manifest.v2.schema.json
+
+packaging_format = 2
+
+id = "veloren"
+name = "Veloren server"
+description.en = "Multiplayer voxel RPG inspired by games such as Cube World, Legend of Zelda: Breath of the Wild, Dwarf Fortress and Minecraft"
+description.fr = "RPG voxel multijoueur inspiré de jeux tels que Cube World, Legend of Zelda : Breath of the Wild, Dwarf Fortress et Minecraft"
+
+version = "0.10.0~ynh1"
+
+maintainers = ["Jules Bertholet"]
+
+[upstream]
+license = "GPL-3.0-only"
+website = "https://veloren.net/"
+demo = "server.veloren.net:14004"
+admindoc = "https://book.veloren.net/players/hosting-a-server.html"
+userdoc = "https://book.veloren.net/players/"
+code = "https://gitlab.com/veloren/veloren"
+cpe = "???" # FIXME: optional but recommended if relevant, this is meant to contain the Common Platform Enumeration, which is sort of a standard id for applications defined by the NIST. In particular, Yunohost may use this is in the future to easily track CVE (=security reports) related to apps. The CPE may be obtained by searching here: https://nvd.nist.gov/products/cpe/search. For example, for Nextcloud, the CPE is 'cpe:2.3:a:nextcloud:nextcloud' (no need to include the version number)
+fund = "???" # FIXME: optional but recommended (or remove if irrelevant / not applicable). This is meant to be an URL where people can financially support this app, especially when its development is based on volunteers and/or financed by its community. YunoHost may later advertise it in the webadmin.
+
+[integration]
+yunohost = ">= 4.1.3"
+architectures = "all" # FIXME: can be replaced by a list of supported archs using the dpkg --print-architecture nomenclature (amd64/i386/armhf/arm64), for example: ["amd64", "i386"]
+multi_instance = true
+ldap = "?" # FIXME: replace with true, false, or "not_relevant". Not to confuse with the "sso" key : the "ldap" key corresponds to wether or not a user *can* login on the app using its YunoHost credentials.
+sso = "?" # FIXME: replace with true, false, or "not_relevant". Not to confuse with the "ldap" key : the "sso" key corresponds to wether or not a user is *automatically logged-in* on the app when logged-in on the YunoHost portal.
+disk = "50M" # FIXME: replace with an **estimate** minimum disk requirement. e.g. 20M, 400M, 1G, ...
+ram.build = "50M" # FIXME: replace with an **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, ...
+ram.runtime = "50M" # FIXME: replace with an **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, ...
+
+[install]
+    [install.server_name]
+    ask.en = "Choose a name for the server"
+    ask.fr = "Choisissez un nom pour le serveur"
+    type = "string"
+    default = "Veloren Alpha"
+
+    [install.description]
+    ask.en = "Choose a description for the server"
+    ask.fr = "Choisissez une déscription pour le serveur"
+    type = "string"
+    default = "This is the best Veloren server"
+
+    [install.auth_server_address]
+    ask.en = "Choose an auth server"
+    ask.fr = "Choisissez un serveur d'authentification"
+    type = "string"
+    default = "https://auth.veloren.net"
+
+    [install.max_players]
+    ask.en = "Set the maximum number of players that can connect to the server concurrently"
+    ask.fr = "Choisissez le nombre maximum de joueurs qui peuvent être connectès en méme temps"
+    type = "string"
+    default = "100"
+
+    [install.max_view_distance]
+    ask.en = "Choose the maximum view distance that clients may request"
+    ask.fr = "Choisissez la distance maximale de visualisation que peuvent demander les clients"
+    type = "string"
+    default = "30"
+
+    [install.max_player_group_size]
+    ask.en = "Choose the maximum size of player groups"
+    ask.fr = "Choisissez le nombre maximal de joueurs dans un groupe"
+    type = "string"
+    default = "6"
+
+    [install.generate_custom_world]
+    ask.en = "Generate a custom world map? (resource-intensive)"
+    ask.fr = "Générer une carte personnalisée ? (nécessite beaucoup de ressources)"
+    type = "boolean"
+    default = false
+
+    [install.world_seed]
+    ask.en = "Choose a seed for the custom map"
+    ask.fr = "Choisir une graine pour la carte personnalisé"
+    type = "string"
+    default = "59686"
+
+    [install.world_map_size_lg_x]
+    ask.en = "Choose the length of the east-west dimension of the custom map (base 2 logarithm)"
+    ask.fr = "Choisir la longueur de la dimension est-ouest de la carte personnalisé (logarithme base 2)"
+    help.en = "Current default is 10, leave blank for unchanged"
+    help.fr = "Valeur par défault actuelle est 10, laisser vide pour ne pas changer"
+    type = "string"
+    optional = true
+
+    [install.world_map_size_lg_y]
+    ask.en = "Choose the length of the north-south dimension of the custom map (base 2 logarithm)"
+    ask.fr = "Choisir la longueur de la dimension nord-sud de la carte personnalisé (logarithme base 2)"
+    help.en = "Current default is 10. Leave blank for unchanged"
+    help.fr = "Valeur par défault actuelle est 10. Laisser vide pour ne pas changer"
+    type = "string"
+    optional = true
+
+    [install.continent_scale_hack]
+    ask.en = "Choose the level of continent detail of the custom map"
+    ask.fr = "Choisir le niveau de détail des continents de la carte personnalisé"
+    help.en = "Current default is 2.0, 4.0 gives an Earth-like result. Leave blank for unchanged"
+    help.fr = "Valeur par défault actuelle est 2.0, 4.0 donne un résultat semblable à la Terre. Laisser vide pour ne pas changer"
+    type = "string"
+    optional = true
+
+    [install.days_in_month]
+    ask.en = "Choose the number of days in a month for the custom map economy simulation"
+    ask.fr = "Choisir le nombre de jours par mois pour la simulation économique de la carte personnalisé"
+    help.en = "Current default is 30.0. Leave blank for unchanged"
+    help.fr = "Valeur par défault actuelle est 30.0. Laisser vide pour ne pas changer"
+    type = "string"
+    optional = true
+
+    [install.months_in_year]
+    ask.en = "Choose the number of months in a year for the custom map economy simulation"
+    ask.fr = "Choisir le nombre de mois par an pour la simulation économique de la carte personnalisé"
+    help.en = "Current default is 12.0. Leave blank for unchanged"
+    help.fr = "Valeur par défault actuelle est 12.0. Laisser vide pour ne pas changer"
+    type = "string"
+    optional = true
+
+    [install.months_in_tick]
+    ask.en = "Choose the number of months per tick for the custom map economy simulation"
+    ask.fr = "Choisir le nombre de mois par étape pour la simulation économique de la carte personnalisé"
+    help.en = "Current default is 3.0. Leave blank for unchanged"
+    help.fr = "Valeur par défault actuelle est 3.0. Laisser vide pour ne pas changer"
+    type = "string"
+    optional = true
+
+    [install.years_in_history]
+    ask.en = "Choose the number of years in history for the custom map economy simulation"
+    ask.fr = "Choisir le nombre d'années dans l'histoire pour la simulation économique de la carte personnalisé"
+    help.en = "Current default is 500.0. Leave blank for unchanged"
+    help.fr = "Valeur par défault actuelle est 500.0. Laisser vide pour ne pas changer"
+    type = "string"
+    optional = true
+
+    [install.generate_economy_csv]
+    ask.en = "Choose whether to generate economy data CSV the custom map economy simulation"
+    ask.fr = "Choisir si générer un CSV de données pour la simulation économique de la carte personnalisé"
+    type = "boolean"
+    default = false
+
+    [install.allow_inter_site_trade]
+    ask.en = "Choose whether to allow inter-site trade for the custom map economy simulation"
+    ask.fr = "Choisir si permettre le commerce entre sites pour la simulation économique de la carte personnalisé"
+    type = "boolean"
+    default = true
+
+[resources]
+        [resources.sources.main]
+        url = "https://gitlab.com/veloren/veloren/-/archive/v0.10.0/veloren-v0.10.0.tar.gz"
+        sha256 = "8bda76af18db8553556cb09a4126bb9c4e0956bcf021fbb93c019de450c38016"
+
+
+    [resources.system_user]
+
+    [resources.install_dir]
+
+    [resources.permissions]
+
+    [resources.ports]
+    main.default = 14004
+    metrics.default = 12345
+
+    [resources.apt]
+    packages = "cargo, rustc, ca-certificates, librust-backtrace+libbacktrace-dev, build-essential, git, git-lfs"
