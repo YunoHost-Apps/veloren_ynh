@@ -1,6 +1,6 @@
 (
     gameserver_address: "0.0.0.0:__PORT__",
-    metrics_address: "0.0.0.0:__METRICS_PORT__",
+    metrics_address: "0.0.0.0:__PORT_METRICS__",
     auth_server_address: __AUTH_SERVER_ADDRESS__,
     max_players: __MAX_PLAYERS__,
     world_seed: __WORLD_SEED__,
