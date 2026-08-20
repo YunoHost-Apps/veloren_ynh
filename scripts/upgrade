@@ -26,8 +26,8 @@ ynh_setup_source --dest_dir="$install_dir" --full_replace
 #=================================================
 ynh_script_progression "Updating $app's configuration files..."
 
-ynh_add_config --template="settings.ron" --destination="$data_dir/.local/share/veloren/userdata/server/server_config/settings.ron"
-ynh_add_config --template="description.ron" --destination="$data_dir/.local/share/veloren/userdata/server/server_config/description.ron"
+ynh_add_config --template="settings.ron" --destination="$data_dir/userdata/server/server_config/settings.ron"
+ynh_add_config --template="description.ron" --destination="$data_dir/userdata/server/server_config/description.ron"
 
 #=================================================
 # REAPPLY SYSTEM CONFIGURATION
