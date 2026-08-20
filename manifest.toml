@@ -151,8 +151,8 @@ ram.runtime = "50M"
 
 [resources]
         [resources.sources.main]
-        amd64.url = "https://gitlab.com/veloren/veloren/-/jobs/12844032182/artifacts/download"
-        amd64.sha256 = "79f57cc77fb39b05d89b4245221befdc7888e4a980da99294a96b7313851aeb0"
+        amd64.url = "https://gitlab.com/veloren/veloren/-/jobs/8735241155/artifacts/download"
+        amd64.sha256 = "49ea52669a1a72b5156563790f38f6332d4384e648626c7221df78df5d13d8d2"
 
         arm64.url = "https://gitlab.com/veloren/veloren/-/jobs/12844032199/artifacts/download"
         arm64.sha256 = "b96109cfbab432234dbdd036b0755f23eba02b8abbd9b82b3a1299bf49cbba91"
