@@ -1,190 +1,48 @@
 #!/bin/bash
 
 #=================================================
-# GENERIC START
-#=================================================
 # IMPORT GENERIC HELPERS
 #=================================================
 
 source _common.sh
 source /usr/share/yunohost/helpers
 
-#=================================================
-# MANAGE SCRIPT FAILURE
-#=================================================
-
-ynh_clean_setup () {
-	ynh_clean_check_starting
-}
-# Exit if an error occurs during the execution of the script
-ynh_abort_if_errors
-
-#=================================================
-# RETRIEVE ARGUMENTS FROM THE MANIFEST
-#=================================================
-
-server_name=$YNH_APP_ARG_SERVER_NAME
-description=$YNH_APP_ARG_DESCRIPTION
-auth_server_address=$YNH_APP_ARG_AUTH_SERVER_ADDRESS
-max_players=$YNH_APP_ARG_MAX_PLAYERS
-max_view_distance=$YNH_APP_ARG_MAX_VIEW_DISTANCE
-max_player_group_size=$YNH_APP_ARG_MAX_PLAYER_GROUP_SIZE
-generate_custom_world=$YNH_APP_ARG_GENERATE_CUSTOM_WORLD
-world_seed=$YNH_APP_ARG_WORLD_SEED
-world_map_size_lg_x=$YNH_APP_ARG_WORLD_MAP_SIZE_LG_X
-world_map_size_lg_y=$YNH_APP_ARG_WORLD_MAP_SIZE_LG_Y
-continent_scale_hack=$YNH_APP_ARG_CONTINENT_SCALE_HACK
-days_in_month=$YNH_APP_ARG_DAYS_IN_MONTH
-months_in_year=$YNH_APP_ARG_MONTHS_IN_YEAR
-months_in_tick=$YNH_APP_ARG_MONTHS_IN_TICK
-years_in_history=$YNH_APP_ARG_YEARS_IN_HISTORY
-generate_economy_csv=$YNH_APP_ARG_GENERATE_ECONOMY_CSV
-allow_inter_site_trade=$YNH_APP_ARG_ALLOW_INTER_SITE_TRADE
-
-app=$YNH_APP_INSTANCE_NAME
-
-#=================================================
-# CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
-#=================================================
-ynh_script_progression --message="Validating installation parameters..." --weight=1
-
-final_path=/opt/yunohost/$app
-test ! -e "$final_path" || ynh_die --message="This path already contains a folder"
-data_path=/home/yunohost.app/$app
-test ! -e "$data_path" || ynh_die --message="This path already contains a folder"
-
-#=================================================
-# STORE SETTINGS FROM MANIFEST
-#=================================================
-ynh_script_progression --message="Storing installation settings..." --weight=1
-
-ynh_app_setting_set --app=$app --key=server_name --value=$server_name
-ynh_app_setting_set --app=$app --key=description --value=$description
-ynh_app_setting_set --app=$app --key=auth_server_address --value=$auth_server_address
-ynh_app_setting_set --app=$app --key=max_players --value=$max_players
-ynh_app_setting_set --app=$app --key=max_view_distance --value=$max_view_distance
-ynh_app_setting_set --app=$app --key=max_player_group_size --value=$max_player_group_size
-ynh_app_setting_set --app=$app --key=generate_custom_world --value=$generate_custom_world
-ynh_app_setting_set --app=$app --key=world_seed --value=$world_seed
-ynh_app_setting_set --app=$app --key=world_map_size_lg_x --value=$world_map_size_lg_x
-ynh_app_setting_set --app=$app --key=world_map_size_lg_y --value=$world_map_size_lg_y
-ynh_app_setting_set --app=$app --key=continent_scale_hack --value=$continent_scale_hack
-ynh_app_setting_set --app=$app --key=days_in_month --value=$days_in_month
-ynh_app_setting_set --app=$app --key=months_in_year --value=$months_in_year
-ynh_app_setting_set --app=$app --key=months_in_tick --value=$months_in_tick
-ynh_app_setting_set --app=$app --key=years_in_history --value=$years_in_history
-ynh_app_setting_set --app=$app --key=generate_economy_csv --value=$generate_economy_csv
-ynh_app_setting_set --app=$app --key=allow_inter_site_trade --value=$allow_inter_site_trade
-
-#=================================================
-# STANDARD MODIFICATIONS
-#=================================================
-# FIND AND OPEN PORTS
-#=================================================
-ynh_script_progression --message="Finding an available port..." --weight=1
-
-# Find an available port
-port=$(ynh_find_port --port=14004)
-ynh_print_info --message="Veloren server will run on port $port, which will be opened in the firewall"
-ynh_app_setting_set --app=$app --key=port --value=$port
-
-metrics_port=$(ynh_find_port --port=$(expr $port + 1))
-ynh_print_info --message="Prometheus metrics will be available at 127.0.0.1:$metrics_port/metrics"
-ynh_app_setting_set --app=$app --key=metrics_port --value=$metrics_port
-
-# Expose port publicly
-
-# Open the port
-ynh_script_progression --message="Configuring firewall..." --weight=1
-ynh_exec_warn_less yunohost firewall allow --no-upnp Both $port
-
-#=================================================
-# INSTALL DEPENDENCIES
-#=================================================
-ynh_script_progression --message="Installing dependencies..." --weight=20
-
-ynh_install_app_dependencies $pkg_dependencies
-
-#=================================================
-# CREATE DEDICATED USER
-#=================================================
-ynh_script_progression --message="Configuring system user..." --weight=1
-
-# Create a system user
-ynh_system_user_create --username=$app --home_dir="$data_path"
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
-ynh_script_progression --message="Setting up source files..." --weight=155
+ynh_script_progression "Setting up source files..."
 
-ynh_app_setting_set --app=$app --key=final_path --value=$final_path
-ynh_app_setting_set --app=$app --key=data_path --value=$data_path
-# Download, check integrity, uncompress and patch the source from app.src
-setup_source
+ynh_setup_source --dest_dir="$install_dir"
 
 #=================================================
-# SPECIFIC SETUP
+# APP INITIAL CONFIGURATION
 #=================================================
-# COMPILE SERVER
-#=================================================
-ynh_script_progression --message="Compiling server..." --weight=135
+ynh_script_progression "Adding $app's configuration files..."
 
-compile_server
-
-#=================================================
-# GENERATE CUSTOM WORLD
-#=================================================
-
-map_generated=0
-
-if [ $generate_custom_world -eq 1 ]; then
-	ynh_script_progression --message="Generating custom world..." --weight=730
-
-	generate_custom_world
-fi
+ynh_add_config --template="settings.ron" --destination="$data_dir/.local/share/veloren/userdata/server/server_config/settings.ron"
+ynh_add_config --template="description.ron" --destination="$data_dir/.local/share/veloren/userdata/server/server_config/description.ron"
 
 #=================================================
-# ADD CONFIGURATIONS
+# SYSTEM CONFIGURATION
 #=================================================
+ynh_script_progression "Adding system configurations related to $app..."
 
-add_configuration_files
+ynh_config_add_systemd
 
-#=================================================
-# SETUP SYSTEMD
-#=================================================
-ynh_script_progression --message="Configuring a systemd service..." --weight=1
+yunohost service add "$app" --description="Veloren game server" --log="/var/log/$app/$app.log"
 
-# Create a dedicated systemd config
-ynh_add_systemd_config --others_var="data_path"
-
-#=================================================
-# GENERIC FINALIZATION
-#=================================================
-# SETUP LOGROTATE
-#=================================================
-ynh_script_progression --message="Configuring log rotation..."  --weight=1
-
-# Use logrotate to manage application logfile(s)
-ynh_use_logrotate
-
-#=================================================
-# INTEGRATE SERVICE IN YUNOHOST
-#=================================================
-ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
-
-yunohost service add $app --description="Veloren game server" --needs_exposed_ports "$port" --log="/var/log/$app/$app.log"
+ynh_config_add_logrotate
 
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Starting a systemd service..." --weight=35
+ynh_script_progression "Starting $app's systemd service..."
 
-# Start a systemd service
-ynh_systemd_action --service_name=$app --action="start" --line_match="Server is ready to accept connections." --log_path="/var/log/$app/$app.log"
+ynh_systemctl --service="$app" --action="start"
 
 #=================================================
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Installation of $app completed" --last
+ynh_script_progression "Installation of $app completed"

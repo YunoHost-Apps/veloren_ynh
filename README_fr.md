@@ -1,59 +1,85 @@
+# Emballage d'une application, à partir de cet exemple
+
+* Copier cette application avant de travailler dessus, en utilisant le bouton ['Use this template'](https://github.com/new?template_name=example_ynh&template_owner=YunoHost) sur le repo GitHub.
+* Editer le fichier `manifest.toml` avec les informations spécifiques à l'application.
+* Editer les scripts `install`, `upgrade`, `remove`, `backup` et `restore`, et tous les fichiers de conf pertinents dans `conf/`.
+  * Utiliser la [documentation sur les aides aux scripts] (https://yunohost.org/packaging_apps_helpers).
+* Éditez aussi les scripts `change_url` et `config`, ou supprimez-les si vous n'en avez pas l'utilité.
+* Ajouter un fichier `LICENSE` pour le paquet. NB : ce fichier LICENSE n'est pas nécessairement la LICENSE de l'application en amont - c'est seulement la LICENSE avec laquelle vous voulez que le code de ce paquet soit publié ;). Nous recommandons d'utiliser [l'AGPL-3] (https://www.gnu.org/licenses/agpl-3.0.txt).
+* Editer les fichiers dans le répertoire `doc/`.
+* Les fichiers `README.md` doivent être générés automatiquement par <https://github.com/YunoHost/apps_tools/tree/main/readme_generator>
+
+---
 <!--
-Nota bene : ce README est automatiquement généré par <https://github.com/YunoHost/apps/tree/master/tools/readme_generator>
-Il NE doit PAS être modifié à la main.
+N.B. : Ce README a été généré automatiquement par https://github.com/YunoHost/apps/tree/main/tools/readme_generator
+Il ne doit PAS être édité à la main.
 -->
 
-# Veloren server pour YunoHost
+# Exemple d'app pour YunoHost
 
-[![Niveau d’intégration](https://dash.yunohost.org/integration/veloren.svg)](https://dash.yunohost.org/appci/app/veloren) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/veloren.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/veloren.maintain.svg)
+[![Niveau d'intégration](https://dash.yunohost.org/integration/example.svg)](https://dash.yunohost.org/appci/app/example) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/example.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/example.maintain.svg)
+[![Installer Example app avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=example)
 
-[![Installer Veloren server avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=veloren)
+*[Read this readme in english.](./README.md)*
 
-*[Lire le README dans d'autres langues.](./ALL_README.md)*
+> *Ce package vous permet d'installer Example app rapidement et simplement sur un serveur YunoHost.
+Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour savoir comment l'installer et en profiter.*
 
-> *Ce package vous permet d’installer Veloren server rapidement et simplement sur un serveur YunoHost.*  
-> *Si vous n’avez pas YunoHost, consultez [ce guide](https://yunohost.org/install) pour savoir comment l’installer et en profiter.*
+## Vue d'ensemble
 
-## Vue d’ensemble
+Some long and extensive description of what the app is and does, lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
-RPG voxel multijoueur inspiré de jeux tels que Cube World, Legend of Zelda : Breath of the Wild, Dwarf Fortress et Minecraft
+### Features
 
-**Version incluse :** 0.10.0~ynh1
+- Ut enim ad minim veniam, quis nostrud exercitation ullamco ;
+- Laboris nisi ut aliquip ex ea commodo consequat ;
+- Duis aute irure dolor in reprehenderit in voluptate ;
+- Velit esse cillum dolore eu fugiat nulla pariatur ;
+- Excepteur sint occaecat cupidatat non proident, sunt in culpa."
 
-**Démo :** <server.veloren.net:14004>
 
-## Captures d’écran
+**Version incluse :** 1.0~ynh1
 
-![Capture d’écran de Veloren server](./doc/screenshots/veloren.png)
+**Démo :** https://demo.example.com
+
+## Captures d'écran
+
+![Capture d'écran de Example app](./doc/screenshots/example.jpg)
 
 ## Avertissements / informations importantes
 
-Veloren est en pre-alpha, il y aura des bugs.
+* Any known limitations, constrains or stuff not working, such as (but not limited to):
+    * requiring a full dedicated domain ?
+    * architectures not supported ?
+    * not-working single-sign on or LDAP integration ?
+    * the app requires an important amount of RAM / disk / .. to install or to work properly
+    * etc...
 
-Ce paquet fournit la dernière version "release" de Veloren, qui est plus ancienne que celle du serveur officiel. Il vous faudra télécharger la version correspondante du client:
- * [Windows x64](https://gitlab.com/veloren/veloren/-/jobs/artifacts/v0.10.0/download?job=windows)
- * [Linux x64](https://gitlab.com/veloren/veloren/-/jobs/artifacts/v0.10.0/download?job=linux)
- * [MacOS x64](https://gitlab.com/veloren/veloren/-/jobs/artifacts/v0.10.0/download?job=macos)
+* Other infos that people should be aware of, such as:
+    * any specific step to perform after installing (such as manually finishing the install, specific admin credentials, ...)
+    * how to configure / administrate the application if it ain't obvious
+    * upgrade process / specificities / things to be aware of ?
+    * security considerations ?
 
 ## Documentations et ressources
 
-- Site officiel de l’app : <https://veloren.net/>
-- Documentation officielle utilisateur : <https://book.veloren.net/players/>
-- Documentation officielle de l’admin : <https://book.veloren.net/players/hosting-a-server.html>
-- Dépôt de code officiel de l’app : <https://gitlab.com/veloren/veloren>
-- YunoHost Store : <https://apps.yunohost.org/app/veloren>
-- Signaler un bug : <https://github.com/YunoHost-Apps/veloren_ynh/issues>
+* Site officiel de l'app : <https://example.com>
+* Documentation officielle utilisateur : <https://yunohost.org/apps>
+* Documentation officielle de l'admin : <https://yunohost.org/packaging_apps>
+* Dépôt de code officiel de l'app : <https://some.forge.com/example/example>
+* Documentation YunoHost pour cette app : <https://yunohost.org/app_example>
+* Signaler un bug : <https://github.com/YunoHost-Apps/example_ynh/issues>
 
 ## Informations pour les développeurs
 
-Merci de faire vos pull request sur la [branche `testing`](https://github.com/YunoHost-Apps/veloren_ynh/tree/testing).
+Merci de faire vos pull request sur la [branche testing](https://github.com/YunoHost-Apps/example_ynh/tree/testing).
 
-Pour essayer la branche `testing`, procédez comme suit :
+Pour essayer la branche testing, procédez comme suit.
 
-```bash
-sudo yunohost app install https://github.com/YunoHost-Apps/veloren_ynh/tree/testing --debug
+``` bash
+sudo yunohost app install https://github.com/YunoHost-Apps/example_ynh/tree/testing --debug
 ou
-sudo yunohost app upgrade veloren -u https://github.com/YunoHost-Apps/veloren_ynh/tree/testing --debug
+sudo yunohost app upgrade example -u https://github.com/YunoHost-Apps/example_ynh/tree/testing --debug
 ```
 
-**Plus d’infos sur le packaging d’applications :** <https://yunohost.org/packaging_apps>
+**Plus d'infos sur le packaging d'applications :** <https://yunohost.org/packaging_apps>

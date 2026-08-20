@@ -14,4 +14,7 @@
         secs: 40,
         nanos: 0,
     ),
+    spawn_town: None,
+    safe_spawn: true,
+    max_player_for_kill_broadcast: Some(20),
 )
