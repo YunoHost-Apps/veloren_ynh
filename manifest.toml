@@ -173,4 +173,5 @@ ram.runtime = "50M"
 
     [resources.ports]
     main.default = 14004
+    main.exposed = "TCP"
     metrics.default = 14005
