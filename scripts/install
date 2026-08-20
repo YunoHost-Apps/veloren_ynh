@@ -20,8 +20,8 @@ ynh_setup_source --dest_dir="$install_dir"
 #=================================================
 ynh_script_progression "Adding $app's configuration files..."
 
-ynh_add_config --template="settings.ron" --destination="$data_dir/userdata/server/server_config/settings.ron"
-ynh_add_config --template="description.ron" --destination="$data_dir/userdata/server/server_config/description.ron"
+ynh_config_add --template="settings.ron" --destination="$data_dir/userdata/server/server_config/settings.ron"
+ynh_config_add --template="description.ron" --destination="$data_dir/userdata/server/server_config/description.ron"
 
 #=================================================
 # SYSTEM CONFIGURATION
