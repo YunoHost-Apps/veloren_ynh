@@ -159,6 +159,7 @@ ram.runtime = "50M"
 
         autoupdate.strategy = "latest_gitlab_release"
 
+        in_subdir = false
         extract   = true
         format = "zip"
 
