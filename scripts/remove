@@ -1,107 +1,28 @@
 #!/bin/bash
 
 #=================================================
-# GENERIC START
-#=================================================
 # IMPORT GENERIC HELPERS
 #=================================================
 
 source _common.sh
 source /usr/share/yunohost/helpers
 
-#=================================================
-# LOAD SETTINGS
-#=================================================
-ynh_script_progression --message="Loading installation settings..." --weight=1
-
-app=$YNH_APP_INSTANCE_NAME
-
-get_app_settings
 
 #=================================================
-# STANDARD REMOVE
+# REMOVE SYSTEM CONFIGURATION
 #=================================================
-# REMOVE SERVICE INTEGRATION IN YUNOHOST
-#=================================================
+ynh_script_progression "Removing system configurations related to $app..."
+
+ynh_config_remove_logrotate
 
 # Remove the service from the list of services known by YunoHost (added from `yunohost service add`)
-if ynh_exec_warn_less yunohost service status $app >/dev/null
-then
-	ynh_script_progression --message="Removing $app service integration..." --weight=1
-	yunohost service remove $app
+if ynh_hide_warnings yunohost service status "$app" >/dev/null; then
+    yunohost service remove "$app"
 fi
-
-#=================================================
-# STOP AND REMOVE SERVICE
-#=================================================
-ynh_script_progression --message="Stopping and removing the systemd service..." --weight=120
-
-# Remove the dedicated systemd config
-ynh_remove_systemd_config
-
-#=================================================
-# REMOVE DEPENDENCIES
-#=================================================
-ynh_script_progression --message="Removing dependencies..." --weight=10
-
-# Remove metapackage and its dependencies
-ynh_remove_app_dependencies
-
-#=================================================
-# REMOVE APP MAIN DIR
-#=================================================
-ynh_script_progression --message="Removing app main directory..." --weight=1
-
-# Remove the app directory securely
-ynh_secure_remove --file="$final_path"
-
-#=================================================
-# REMOVE APP DATA DIR
-#=================================================
-ynh_script_progression --message="Removing app data directory..." --weight=1
-
-# Remove the data directory securely
-ynh_secure_remove --file="$data_path"
-
-#=================================================
-# REMOVE LOGROTATE CONFIGURATION
-#=================================================
-ynh_script_progression --message="Removing logrotate configuration..." --weight=1
-
-# Remove the app-specific logrotate config
-ynh_remove_logrotate
-
-#=================================================
-# CLOSE A PORT
-#=================================================
-
-if yunohost firewall list | grep -q "\- $port$"
-then
-	ynh_script_progression --message="Closing port $port..." --weight=1
-	ynh_exec_warn_less yunohost firewall disallow TCP $port
-fi
-
-#=================================================
-# SPECIFIC REMOVE
-#=================================================
-# REMOVE VARIOUS FILES
-#=================================================
-
-# Remove the log files
-ynh_secure_remove --file="/var/log/$app"
-
-#=================================================
-# GENERIC FINALIZATION
-#=================================================
-# REMOVE DEDICATED USER
-#=================================================
-ynh_script_progression --message="Removing the dedicated system user..." --weight=1
-
-# Delete a system user
-ynh_system_user_delete --username=$app
+ynh_config_remove_systemd
 
 #=================================================
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Removal of $app completed" --last
+ynh_script_progression "Removal of $app completed"
