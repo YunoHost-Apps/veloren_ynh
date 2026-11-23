@@ -271,7 +271,7 @@ services = ["__APP__"]
 
         # The next alert is overwrited with a getter from the config script
         [main.stripe.amount]
-        ask = "Donation in the month : XX €
+        ask = "Donation in the month : XX €"
         type = "alert"
         style = "success"
 
